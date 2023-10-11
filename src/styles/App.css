@@ -5,6 +5,19 @@
   text-align: center;
 }
 
+.input-name {
+  display: block;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.profile {
+  max-width: 40px;
+  max-height: 54px;
+  width: auto;
+  height: auto;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
