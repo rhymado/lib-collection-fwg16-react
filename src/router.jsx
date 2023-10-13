@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 
 import Auth from "./pages/Auth";
 import App from "./pages/App";
+import SeeAll from "./pages/SeeAll";
 
 const router = createBrowserRouter([
   {
@@ -12,6 +13,10 @@ const router = createBrowserRouter([
   {
     path: "/app",
     element: <App title="Beginner Frontend" />,
+  },
+  {
+    path: "/see-all",
+    element: <SeeAll />,
   },
 ]);
 

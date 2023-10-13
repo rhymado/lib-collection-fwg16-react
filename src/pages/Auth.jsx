@@ -1,15 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+// import axios from "axios";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { useUserContext } from "../contexts/userContext";
+import { login, register } from "../https/auth";
 
 import bgLibrary from "../assets/bg-library.jpg";
 
 function Auth() {
   const [isPwdShown, setIsPwdShown] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
+  const { changeUser } = useUserContext();
   const toggleLogin = () => {
     setIsLogin((state) => !state);
   };
@@ -17,23 +20,27 @@ function Auth() {
   const showPwdHandler = () => {
     setIsPwdShown((state) => !state);
   };
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
     const body = {
       email: e.target.email.value,
       password: e.target.pwd.value,
     };
     if (!isLogin) Object.assign(body, { username: e.target.username.value });
-    // console.log(body);
-    let url = "http://localhost:8000/auth";
-    if (!isLogin) url += "/register";
-    axios
-      .post(url, body)
-      .then((res) => {
-        console.log(res.data);
-        navigate("/app");
-      })
-      .catch((err) => console.log(err));
+    try {
+      const { data } = isLogin ? await login(body) : await register(body);
+      changeUser({
+        isUserAvailable: true,
+        userInfo: isLogin ? data.data.userInfo : data.data,
+      });
+      if (isLogin) return navigate("/app");
+      toggleLogin();
+      e.target.email.value = "";
+      e.target.pwd.value = "";
+      e.target.username.value = "";
+    } catch (error) {
+      (err) => console.log(err);
+    }
   };
   return (
     <>

@@ -1,11 +1,11 @@
-// eslint-disable-next-line no-unused-vars
-import React, { Component, useState, useEffect } from "react";
+import { Component, useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 import "../styles/App.css";
 
 import reactLogo from "../assets/react.svg";
-import getImageURL from "../utils/imageGetter";
+import { getImageUrl } from "../utils/imageGetter";
+import { useUserContext } from "../contexts/userContext";
 
 class AppClass extends Component {
   state = {
@@ -40,6 +40,7 @@ function AppFunc(props) {
   const [name, setName] = useState("FWG");
   const [count, setCount] = useState(0);
   // const navigate = useNavigate();
+  const { user, changeUser } = useUserContext();
   const submitHandler = (e) => {
     e.preventDefault();
     const newName = e.target.fullname.value;
@@ -49,29 +50,42 @@ function AppFunc(props) {
     const newNumber = count + 1;
     setCount(newNumber);
   };
+  const onLogoutHandler = () => {
+    delete user.userInfo;
+    changeUser({
+      isUserAvailable: false,
+      // userInfo: {},
+    });
+  };
   // useEffect(handler, deps)
   // deps => [] => behaviour seperti componentDidMount
   // deps => [var1, var2] => behaviour seperti componentDidUpdate
   // componentWillUnmount digambarkan menggunakan return pada handler useEffect
-  useEffect(() => {
-    console.log("done mounting");
-    // return () => {
-    //   // cleanup function
-    // };
-  }, []);
-  useEffect(() => {
-    console.log("done updating");
-  }, [count, name]);
+  // useEffect(() => {
+  //   console.log("done mounting");
+  //   // return () => {
+  //   //   // cleanup function
+  //   // };
+  // }, []);
+  // useEffect(() => {
+  //   console.log("done updating");
+  // }, [count, name]);
   return (
     <div>
-      <div>
+      {user.isUserAvailable && (
+        <h1 className="text-4xl mb-3 font-bold capitalize">
+          Selamat Datang, {user.userInfo.username}
+        </h1>
+      )}
+
+      <div className="flex justify-center items-center">
         {/* import image from public directory */}
         <img src="/svg/vite.svg" alt="vite-logo" height={75} width={75} />
         {/* import image from assets */}
         <img src={reactLogo} alt="react-logo" height={75} width={75} />
         {/* dynamic import from assets */}
         <img
-          src={getImageURL("profile", "png")}
+          src={getImageUrl("profile", "png")}
           alt="profile"
           height={539}
           width={400}
@@ -81,14 +95,21 @@ function AppFunc(props) {
       <p>{name}</p>
       <p>{props.title}</p>
       <form onSubmit={submitHandler}>
-        <input type="text" name="fullname" className="input-name" />
-        <button type="submit">Change</button>
+        <input type="text" name="fullname" className="input-name w-full" />
+        <button type="submit" className="btn">
+          Change
+        </button>
       </form>
-      <button onClick={increaseCount}>count is {count}</button>
+      <button onClick={increaseCount} className="btn">
+        count is {count}
+      </button>
+      <button className="btn" onClick={onLogoutHandler}>
+        Logout
+      </button>
       <div>
         {/* <button onClick={() => navigate("/")}>Go to Auth</button> */}
         <Link to={"/"}>
-          <button className="border-solid border-2 border-black p-3 m-3">Go to Auth</button>
+          <button className="btn">Go to Auth</button>
         </Link>
       </div>
     </div>
