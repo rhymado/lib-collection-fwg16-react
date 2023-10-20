@@ -1,5 +1,11 @@
-import { Component, useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import {
+  useState,
+  // useEffect
+} from "react";
+import {
+  // useNavigate,
+  Link,
+} from "react-router-dom";
 
 import "../styles/App.css";
 
@@ -7,38 +13,42 @@ import reactLogo from "../assets/react.svg";
 import { getImageUrl } from "../utils/imageGetter";
 import { useUserContext } from "../contexts/userContext";
 
-class AppClass extends Component {
-  state = {
-    name: "Fazztrack",
-    count: 0,
-  };
-  increaseCount = () => {
-    this.setState({
-      count: this.state.count + 1,
-    });
-  };
-  componentDidMount() {
-    console.log("done mounting");
-  }
-  componentDidUpdate() {
-    console.log("done updating");
-  }
-  render() {
-    console.log("render");
-    return (
-      <div className="test">
-        <p>{this.state.name}</p>
-        <p>{this.props.title}</p>
-        <button onClick={this.increaseCount}>count is {this.state.count}</button>
-      </div>
-    );
-  }
-}
+// class AppClass extends Component {
+//   state = {
+//     name: "Fazztrack",
+//     count: 0,
+//   };
+//   increaseCount = () => {
+//     this.setState({
+//       count: this.state.count + 1,
+//     });
+//   };
+//   componentDidMount() {
+//     console.log("done mounting");
+//   }
+//   componentDidUpdate() {
+//     console.log("done updating");
+//   }
+//   render() {
+//     console.log("render");
+//     return (
+//       <div className="test">
+//         <p>{this.state.name}</p>
+//         <p>{this.props.title}</p>
+//         <button onClick={this.increaseCount}>count is {this.state.count}</button>
+//       </div>
+//     );
+//   }
+// }
 
 // eslint-disable-next-line no-unused-vars
 function AppFunc(props) {
   const [name, setName] = useState("FWG");
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(() => {
+    const value = parseInt(localStorage.getItem("count"));
+    if (isNaN(value)) return 0;
+    return value;
+  });
   // const navigate = useNavigate();
   const { user, changeUser } = useUserContext();
   const submitHandler = (e) => {
@@ -47,8 +57,10 @@ function AppFunc(props) {
     setName(newName);
   };
   const increaseCount = () => {
-    const newNumber = count + 1;
-    setCount(newNumber);
+    setCount((prevCount) => {
+      localStorage.setItem("count", prevCount + 1);
+      return prevCount + 1;
+    });
   };
   const onLogoutHandler = () => {
     delete user.userInfo;
@@ -118,24 +130,3 @@ function AppFunc(props) {
 
 export default AppFunc;
 // export default AppClass;
-
-{
-  /* <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
-    </> */
-}

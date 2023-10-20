@@ -1,7 +1,7 @@
 function Footer() {
   return (
     <footer>
-      <p>&copy; FWG 16</p>
+      <p className="text-left">&copy; FWG 16</p>
     </footer>
   );
 }
