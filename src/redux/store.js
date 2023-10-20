@@ -7,9 +7,9 @@ const initialState = {
 const store = configureStore({
   reducer: (prevState = initialState, action) => {
     /**
-     * kalkulator (ADD, SUB, MUL, DIV)
+     * kalkulator (ADD, SUB, MUL, DIV, SET)
      * action: {
-     *  type: (ADD, SUB, MUL, DIV)
+     *  type: (ADD, SUB, MUL, DIV, SET)
      *  data: berisikan data relevan
      * }
      */
@@ -35,6 +35,16 @@ const store = configureStore({
         return {
           ...prevState,
           number: prevState.number / action.data,
+        };
+      case "SET":
+        return {
+          ...prevState,
+          number: action.data,
+        };
+      case "DEL":
+        return {
+          ...prevState,
+          number: 0,
         };
       default:
         return prevState;
