@@ -2,10 +2,11 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import Title from "../components/Title";
+import { add, del, div, mul, set, sub } from "../redux/slices/calculator";
 
 function Calc() {
   const number = useSelector((state) => {
-    return state.number;
+    return state.calculator.number;
   });
   const dispatch = useDispatch();
   const [screen, setScreen] = useState(() => {
@@ -14,23 +15,21 @@ function Calc() {
   });
   const [operator, setOperator] = useState({
     symbol: "",
-    value: "",
+    action: null,
   });
   const operators = [
-    { symbol: "+", value: "ADD" },
-    { symbol: "-", value: "SUB" },
-    { symbol: "x", value: "MUL" },
-    { symbol: "/", value: "DIV" },
-    { symbol: "=", value: "EQUAL" },
+    { symbol: "+", action: add },
+    { symbol: "-", action: sub },
+    { symbol: "x", action: mul },
+    { symbol: "/", action: div },
+    { symbol: "=" },
   ];
-  const numpad = [1, 2, 3, 4, 5, 6, 7, 8, 9, "C", 0, ""];
+  const numpad = [1, 2, 3, 4, 5, 6, 7, 8, 9, "C", 0, "."];
   const numberHandler = (numValue) => {
     if (numValue === "C") {
       setOperator("");
       setScreen("");
-      dispatch({
-        type: "DEL",
-      });
+      dispatch(del());
       return;
     }
     setScreen((screen) => {
@@ -38,11 +37,8 @@ function Calc() {
     });
   };
   const operatorHandler = (op) => {
-    if (op.value === "EQUAL") {
-      dispatch({
-        type: operator.value,
-        data: parseInt(screen),
-      });
+    if (op.symbol === "=" && operator.action) {
+      dispatch(operator.action(parseInt(screen)));
       setOperator({
         symbol: "",
         value: "",
@@ -53,10 +49,11 @@ function Calc() {
 
     setOperator(op);
     if (screen) {
-      dispatch({
-        type: "SET",
-        data: parseInt(screen),
-      });
+      // dispatch({
+      //   type: "SET",
+      //   data: parseInt(screen),
+      // });
+      dispatch(set(parseInt(screen)));
       setScreen("");
     }
   };
