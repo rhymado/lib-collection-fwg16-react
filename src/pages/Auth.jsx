@@ -66,15 +66,17 @@ function Auth() {
                 className="border-solid border-black border-2 p-1"
               />
             </div>
-            <div className={`flex flex-col ${isLogin && "hidden"}`}>
-              <label htmlFor="username">username</label>
-              <input
-                type="text"
-                name="username"
-                id="username"
-                className="border-solid border-black border-2 p-1"
-              />
-            </div>
+            {!isLogin && (
+              <div className="flex flex-col">
+                <label htmlFor="username">username</label>
+                <input
+                  type="text"
+                  name="username"
+                  id="username"
+                  className="border-solid border-black border-2 p-1"
+                />
+              </div>
+            )}
             <div className="flex flex-col">
               <label htmlFor="pwd">password</label>
               <input
