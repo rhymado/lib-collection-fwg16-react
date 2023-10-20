@@ -13,6 +13,7 @@ import reactLogo from "../assets/react.svg";
 import { getImageUrl } from "../utils/imageGetter";
 import { useUserContext } from "../contexts/userContext";
 import useLocalStorage from "../utils/hooks/useLocalStorage";
+import Title from "../components/Title";
 
 // class AppClass extends Component {
 //   state = {
@@ -85,48 +86,50 @@ function AppFunc(props) {
   //   console.log("done updating");
   // }, [count, name]);
   return (
-    <div>
-      {user.isUserAvailable && (
-        <h1 className="text-4xl mb-3 font-bold capitalize">
-          Selamat Datang, {user.userInfo.username}
-        </h1>
-      )}
-
-      <div className="flex justify-center items-center">
-        {/* import image from public directory */}
-        <img src="/svg/vite.svg" alt="vite-logo" height={75} width={75} />
-        {/* import image from assets */}
-        <img src={reactLogo} alt="react-logo" height={75} width={75} />
-        {/* dynamic import from assets */}
-        <img
-          src={getImageUrl("profile", "png")}
-          alt="profile"
-          height={539}
-          width={400}
-          className="profile"
-        />
-      </div>
-      <p>{name}</p>
-      <p>{props.title}</p>
-      <form onSubmit={submitHandler}>
-        <input type="text" name="fullname" className="input-name w-full" />
-        <button type="submit" className="btn">
-          Change
-        </button>
-      </form>
-      <button onClick={increaseCount} className="btn">
-        count is {count}
-      </button>
-      <button className="btn" onClick={onLogoutHandler}>
-        Logout
-      </button>
+    <Title title="App">
       <div>
-        {/* <button onClick={() => navigate("/")}>Go to Auth</button> */}
-        <Link to={"/"}>
-          <button className="btn">Go to Auth</button>
-        </Link>
+        {user.isUserAvailable && (
+          <h1 className="text-4xl mb-3 font-bold capitalize">
+            Selamat Datang, {user.userInfo.username}
+          </h1>
+        )}
+
+        <div className="flex justify-center items-center">
+          {/* import image from public directory */}
+          <img src="/svg/vite.svg" alt="vite-logo" height={75} width={75} />
+          {/* import image from assets */}
+          <img src={reactLogo} alt="react-logo" height={75} width={75} />
+          {/* dynamic import from assets */}
+          <img
+            src={getImageUrl("profile", "png")}
+            alt="profile"
+            height={539}
+            width={400}
+            className="profile"
+          />
+        </div>
+        <p>{name}</p>
+        <p>{props.title}</p>
+        <form onSubmit={submitHandler}>
+          <input type="text" name="fullname" className="input-name w-full" />
+          <button type="submit" className="btn">
+            Change
+          </button>
+        </form>
+        <button onClick={increaseCount} className="btn">
+          count is {count}
+        </button>
+        <button className="btn" onClick={onLogoutHandler}>
+          Logout
+        </button>
+        <div>
+          {/* <button onClick={() => navigate("/")}>Go to Auth</button> */}
+          <Link to={"/"}>
+            <button className="btn">Go to Auth</button>
+          </Link>
+        </div>
       </div>
-    </div>
+    </Title>
   );
 }
 

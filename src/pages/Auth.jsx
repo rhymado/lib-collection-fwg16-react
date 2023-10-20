@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import Title from "../components/Title";
 import { useUserContext } from "../contexts/userContext";
 import { login, register } from "../utils/https/auth";
 
@@ -43,7 +44,7 @@ function Auth() {
     }
   };
   return (
-    <>
+    <Title title="Auth">
       <Header />
       <main className="p-3 bg-beige text-left">
         <section className="flex flex-col items-center mb-3">
@@ -113,7 +114,7 @@ function Auth() {
         </section>
       </main>
       <Footer />
-    </>
+    </Title>
   );
 }
 

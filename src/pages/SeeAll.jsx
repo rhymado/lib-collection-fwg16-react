@@ -1,4 +1,5 @@
 import { useSearchParams } from "react-router-dom";
+import Title from "../components/Title";
 
 const GenreCheckbox = ({ genre, onChangeHandler, checked }) => (
   <li>
@@ -73,51 +74,53 @@ function SeeAll() {
     return false;
   };
   return (
-    <main className="bg-slate-500 p-3 h-full text-white">
-      <div className="bg-white rounded-lg my-3">
-        <form onSubmit={searchHandler} className="w-full flex">
-          <input
-            type="text"
-            name="search"
-            className="p-3 text-black outline-none bg-transparent flex-1 focus:outline-none rounded-l-lg"
-            defaultValue={searchParams.get("search")}
-          />
-          <button type="submit" className="p-2 bg-black rounded-r-lg">
-            Search
-          </button>
-        </form>
-      </div>
-      <aside className="flex justify-between">
-        <div className="text-left">
-          <h2>Genre</h2>
-          <ol>
-            {genreList.map((genre, idx) => {
-              return (
-                <GenreCheckbox
-                  key={idx}
-                  genre={genre}
-                  onChangeHandler={genreHandler}
-                  checked={isGenreChecked(genre)}
-                />
-              );
-            })}
-          </ol>
+    <Title title="See All">
+      <main className="bg-slate-500 p-3 h-full text-white">
+        <div className="bg-white rounded-lg my-3">
+          <form onSubmit={searchHandler} className="w-full flex">
+            <input
+              type="text"
+              name="search"
+              className="p-3 text-black outline-none bg-transparent flex-1 focus:outline-none rounded-l-lg"
+              defaultValue={searchParams.get("search")}
+            />
+            <button type="submit" className="p-2 bg-black rounded-r-lg">
+              Search
+            </button>
+          </form>
         </div>
-        <div className="text-right">
-          <h2>Sort</h2>
-          <select
-            className="text-black"
-            onChange={sortHandler}
-            defaultValue={searchParams.get("sort") || ""}
-          >
-            <option value="" disabled></option>
-            {sortList.map((sort, idx) => (
-              <SortOptions key={idx} sort={sort} />
-            ))}
-          </select>
-        </div>
-      </aside>
-    </main>
+        <aside className="flex justify-between">
+          <div className="text-left">
+            <h2>Genre</h2>
+            <ol>
+              {genreList.map((genre, idx) => {
+                return (
+                  <GenreCheckbox
+                    key={idx}
+                    genre={genre}
+                    onChangeHandler={genreHandler}
+                    checked={isGenreChecked(genre)}
+                  />
+                );
+              })}
+            </ol>
+          </div>
+          <div className="text-right">
+            <h2>Sort</h2>
+            <select
+              className="text-black"
+              onChange={sortHandler}
+              defaultValue={searchParams.get("sort") || ""}
+            >
+              <option value="" disabled></option>
+              {sortList.map((sort, idx) => (
+                <SortOptions key={idx} sort={sort} />
+              ))}
+            </select>
+          </div>
+        </aside>
+      </main>
+    </Title>
   );
 }
 

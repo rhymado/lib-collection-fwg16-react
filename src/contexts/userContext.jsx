@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext } from "react";
+import useLocalStorage from "../utils/hooks/useLocalStorage";
 
 // generate context
 const UserContext = createContext();
@@ -9,9 +10,10 @@ export const useUserContext = () => useContext(UserContext);
 // siapkan komponen provider
 export const UserProvider = ({ children }) => {
   // sediakan value yang akan di provide
-  const [user, setUser] = useState({
+  const initialValue = {
     isUserAvailable: false,
-  });
+  };
+  const [user, setUser] = useLocalStorage("user", initialValue, "json");
   const changeUser = (data) => {
     setUser((user) => ({
       ...user,

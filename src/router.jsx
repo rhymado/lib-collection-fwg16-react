@@ -1,5 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 
+import Private from "./components/Private";
+
 import Auth from "./pages/Auth";
 import App from "./pages/App";
 import SeeAll from "./pages/SeeAll";
@@ -16,7 +18,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/see-all",
-    element: <SeeAll />,
+    element: (
+      <Private>
+        <SeeAll />
+      </Private>
+    ),
   },
 ]);
 

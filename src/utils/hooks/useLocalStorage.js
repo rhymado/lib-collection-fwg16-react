@@ -23,7 +23,10 @@ const useLocalStorage = (key, initialValue = "", type) => {
 
   useEffect(() => {
     // jika terjadi perubahan value, maka update localstorage nya
-    localStorage.setItem(key, value);
+    let storedValue = value;
+    // untuk handle json
+    if (type === "json") storedValue = JSON.stringify(storedValue);
+    localStorage.setItem(key, storedValue);
   }, [value]);
 
   return [value, setValue];
