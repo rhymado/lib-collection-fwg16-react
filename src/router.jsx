@@ -2,9 +2,9 @@ import { createBrowserRouter } from "react-router-dom";
 
 import Private from "./components/Private";
 
-import Auth from "./pages/Auth";
-import App from "./pages/App";
-import SeeAll from "./pages/SeeAll";
+import pages from "./pages";
+
+const { App, Auth, SeeAll, Calc } = pages;
 
 const router = createBrowserRouter([
   {
@@ -23,6 +23,10 @@ const router = createBrowserRouter([
         <SeeAll />
       </Private>
     ),
+  },
+  {
+    path: "/calculator",
+    element: <Calc />,
   },
 ]);
 
