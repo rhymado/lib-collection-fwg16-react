@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { useUserContext } from "../contexts/userContext";
-import { login, register } from "../https/auth";
+import { login, register } from "../utils/https/auth";
 
 import bgLibrary from "../assets/bg-library.jpg";
 

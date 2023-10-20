@@ -12,6 +12,7 @@ import "../styles/App.css";
 import reactLogo from "../assets/react.svg";
 import { getImageUrl } from "../utils/imageGetter";
 import { useUserContext } from "../contexts/userContext";
+import useLocalStorage from "../utils/hooks/useLocalStorage";
 
 // class AppClass extends Component {
 //   state = {
@@ -44,11 +45,12 @@ import { useUserContext } from "../contexts/userContext";
 // eslint-disable-next-line no-unused-vars
 function AppFunc(props) {
   const [name, setName] = useState("FWG");
-  const [count, setCount] = useState(() => {
-    const value = parseInt(localStorage.getItem("count"));
-    if (isNaN(value)) return 0;
-    return value;
-  });
+  // const [count, setCount] = useState(() => {
+  //   const value = parseInt(localStorage.getItem("count"));
+  //   if (isNaN(value)) return 0;
+  //   return value;
+  // });
+  const [count, setCount] = useLocalStorage("count", 0, "number");
   // const navigate = useNavigate();
   const { user, changeUser } = useUserContext();
   const submitHandler = (e) => {
@@ -58,7 +60,7 @@ function AppFunc(props) {
   };
   const increaseCount = () => {
     setCount((prevCount) => {
-      localStorage.setItem("count", prevCount + 1);
+      // localStorage.setItem("count", prevCount + 1);
       return prevCount + 1;
     });
   };
