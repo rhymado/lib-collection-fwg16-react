@@ -1,4 +1,15 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import {
+  persistStore,
+  persistReducer,
+  PERSIST,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  REGISTER,
+  PURGE,
+} from "redux-persist";
+import storage from "redux-persist/lib/storage";
 
 import calcReducer from "./slices/calculator";
 import userReducer from "./slices/user";
@@ -53,11 +64,34 @@ import userReducer from "./slices/user";
 //   }
 // };
 
-const store = configureStore({
-  reducer: {
-    calculator: calcReducer,
-    user: userReducer,
-  },
+const persistConfig = {
+  key: "lib",
+  storage,
+  // bisa ditambah blacklist atau whitelist
+  whitelist: ["calculator"],
+};
+
+const userPersistConfig = {
+  key: "user-lib",
+  storage,
+  whitelist: ["isUserAvailable", "userInfo"],
+};
+
+const combinedReducer = combineReducers({
+  calculator: calcReducer,
+  user: persistReducer(userPersistConfig, userReducer),
 });
 
-export default store;
+const persistedReducer = persistReducer(persistConfig, combinedReducer);
+
+export const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [PERSIST, FLUSH, REHYDRATE, PAUSE, REGISTER, PURGE],
+      },
+    }),
+});
+
+export const persistedStore = persistStore(store);
