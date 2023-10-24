@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import calcReducer from "./slices/calculator";
+import userReducer from "./slices/user";
 
 // const initialState = {
 //   number: 0,
@@ -55,6 +56,7 @@ import calcReducer from "./slices/calculator";
 const store = configureStore({
   reducer: {
     calculator: calcReducer,
+    user: userReducer,
   },
 });
 

@@ -1,23 +1,28 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 // import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Title from "../components/Title";
-import { useUserContext } from "../contexts/userContext";
-import { login, register } from "../utils/https/auth";
+// import { useUserContext } from "../contexts/userContext";
+// import { login, register } from "../utils/https/auth";
+import { userAction } from "../redux/slices/user";
 
 import bgLibrary from "../assets/bg-library.jpg";
 
 function Auth() {
+  const user = useSelector((state) => state.user);
+  // console.log(user.err);
+  const dispatch = useDispatch();
   const [isPwdShown, setIsPwdShown] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
-  const { changeUser } = useUserContext();
+  // const { changeUser } = useUserContext();
   const toggleLogin = () => {
     setIsLogin((state) => !state);
   };
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const showPwdHandler = () => {
     setIsPwdShown((state) => !state);
   };
@@ -28,20 +33,23 @@ function Auth() {
       password: e.target.pwd.value,
     };
     if (!isLogin) Object.assign(body, { username: e.target.username.value });
-    try {
-      const { data } = isLogin ? await login(body) : await register(body);
-      changeUser({
-        isUserAvailable: true,
-        userInfo: isLogin ? data.data.userInfo : data.data,
-      });
-      if (isLogin) return navigate("/app");
-      toggleLogin();
-      e.target.email.value = "";
-      e.target.pwd.value = "";
-      e.target.username.value = "";
-    } catch (error) {
-      (err) => console.log(err);
-    }
+    // try {
+    const { loginThunk, registerThunk } = userAction;
+    // const { data } = isLogin ? await login(body) : await register(body);
+    if (isLogin) return dispatch(loginThunk(body));
+    return dispatch(registerThunk(body));
+    // changeUser({
+    //   isUserAvailable: true,
+    //   userInfo: isLogin ? data.data.userInfo : data.data,
+    // });
+    // if (isLogin) return navigate("/app");
+    // toggleLogin();
+    // e.target.email.value = "";
+    // e.target.pwd.value = "";
+    // e.target.username.value = "";
+    // } catch (error) {
+    //   (err) => console.log(err);
+    // }
   };
   return (
     <Title title="Auth">
@@ -98,9 +106,16 @@ function Auth() {
                 </label>
               </div>
             </div>
+            {user.isRejected && (user.err.login || user.err.register) && (
+              <p className="block text-center text-red-600 font-bold text-lg">
+                {user.err.login.message || user.err.register.message}
+              </p>
+            )}
             <button
               type="submit"
-              className="bg-orange-500 cursor-pointer select-none border-solid border-black border-2 p-3 w-full hover:bg-orange-400"
+              className={`bg-orange-500 ${
+                user.isPending ? "cursor-progress" : "cursor-pointer"
+              } select-none border-solid border-black border-2 p-3 w-full hover:bg-orange-400`}
             >
               {isLogin ? "Login" : "Register"}
             </button>
